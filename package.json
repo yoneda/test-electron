@@ -1,14 +1,12 @@
 {
-  "name": "test-server",
+  "name": "easy-diary",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon --ignore ./build server.js",
-    "build": "parcel build index.html --public-url ./",
-    "electron": "electron desktop.js",
-    "desktop": "concurrently 'npm run build wait-on' 'npm run dev' 'npm run electron'"
+    "dev": "parcel index.html --out-dir build/output --cache-dir build/cache",
+    "build": "parcel build index.html  --out-dir build/output --cache-dir build/cache --public-url ./",
+    "electron": "electron desktop.js"
   },
   "repository": {
     "type": "git",
@@ -22,23 +20,13 @@
   "homepage": "https://github.com/yoneda/test-server#readme",
   "dependencies": {
     "@reach/router": "^1.3.4",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-async-handler": "^1.1.4",
-    "lodash": "^4.17.20",
-    "parcel-bundler": "^1.12.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "styled-components": "^5.2.0",
-    "styled-reset": "^4.2.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "styled-components": "^5.2.1",
+    "styled-reset": "^4.3.0",
     "superagent": "^6.1.0"
   },
   "devDependencies": {
-    "concurrently": "^5.3.0",
-    "electron": "^10.1.3",
-    "nodemon": "^2.0.4",
-    "wait-on": "^5.2.0"
+    "parcel-bundler": "^1.12.4"
   }
 }

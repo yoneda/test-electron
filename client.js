@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import { Router, Link } from "@reach/router";
 import request from "superagent";
 import styled from "styled-components";
-import EmptyApp from "./EmptyApp";
 import { Reset } from "styled-reset";
 
 const StatusGood = styled.span`
@@ -23,42 +22,7 @@ const Box = styled.div`
 `;
 
 function Home() {
-  const [helth, setHelth] = useState("");
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-    const port = process.env.PORT || 3000;
-    const url = `http://localhost:${port}/api/helth`;
-    request
-      .get("/api/helth")
-      .then((res) => res.body)
-      .then((body) => {
-        setHelth(body.helth);
-      });
-  }, []);
-  useEffect(() => {
-    const port = process.env.PORT || 3000;
-    const url = `http://localhost:${port}/api/users`;
-    request
-      .get("/api/users")
-      .then((res) => res.body)
-      .then((body) => {
-        setUsers(body.users);
-      });
-  }, []);
-
-  return (
-    <div>
-      <Nav />
-      <Box>
-        helth:{" "}
-        {helth ? <StatusGood>{helth}</StatusGood> : <StatusBad>bad</StatusBad>}
-      </Box>
-      <Box>
-        {users &&
-          users.map((user, index) => <div key={index}>{user.email}</div>)}
-      </Box>
-    </div>
-  );
+  return <div>hello</div>;
 }
 
 function About() {
@@ -120,7 +84,6 @@ function App() {
         <About path="/about" />
         <Works path="/works" />
         <Contact path="/contact" />
-        <EmptyApp path="/app" />
       </Router>
     </Fragment>
   );
