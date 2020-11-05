@@ -1,90 +1,92 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import ReactDOM from "react-dom";
-import { Router, Link } from "@reach/router";
-import request from "superagent";
 import styled from "styled-components";
 import { Reset } from "styled-reset";
+import dayjs from "dayjs";
+import {
+  action,
+  createStore,
+  StoreProvider,
+  useStoreState,
+  useStoreActions,
+} from "easy-peasy";
 
-const StatusGood = styled.span`
-  color: green;
-`;
+let count = 0;
 
-const StatusBad = styled.span`
-  color: red;
-`;
+const store = createStore({
+  notes: [],
+  addNote: action((state, payload) => {
+    const { body } = payload;
+    const today = dayjs().format("YYYY-M-D H:mm:ss");
+    const note = { id: count, body, createdAt: today };
+    state.notes.push(note);
+    count = count + 1;
+  }),
+  editNote: action((state, payload) => {
+    const { id, body } = payload;
+    state.notes = state.notes.map((note) =>
+      note.id === id ? { ...note, body } : note
+    );
+  }),
+  deleteNote: action((state, payload) => {
+    const { id } = payload;
+    state.notes = state.notes.filter((note) => note.id !== id);
+  }),
+});
 
-const Box = styled.div`
-  border: 1px solid black;
-  border-radius: 5px;
-  margin: 10px;
-  padding: 10px;
-  width: 400px;
-`;
-
-function Home() {
-  return <div>hello</div>;
-}
-
-function About() {
-  const [name, setName] = useState("");
-  useEffect(() => {
-    const url = "https://reqres.in/api/users/1";
-    request
-      .get(url)
-      .then((res) => res.body)
-      .then((body) => {
-        setName(body.data.last_name);
-      });
-  }, []);
+function Main() {
+  const notes = useStoreState((state) => state.notes);
+  const [addNote, editNote] = useStoreActions((actions) => [
+    actions.addNote,
+    actions.editNote,
+  ]);
+  const [addText, setAddText] = useState("");
+  const [editText, setEditText] = useState("");
+  const [editIndex, setEditIndex] = useState(0);
+  const onAddClick = () => {
+    addNote({ body: addText });
+    setAddText("");
+  };
+  const onEditClick = () => {
+    editNote({ id: editIndex, body: editText });
+    setEditText("");
+  };
   return (
-    <div>
-      <Nav />
-      <div>This is about page</div>
-      {name && <div>{name}</div>}
-    </div>
-  );
-}
-
-function Works() {
-  return (
-    <div>
-      <Nav />
-      <div>This is works page</div>
-      <p>Please check my awesome works.</p>
-    </div>
-  );
-}
-
-function Contact() {
-  return (
-    <div>
-      <Nav />
-      <div>This is contact page</div>
-      <p>Mail to me.</p>
-    </div>
-  );
-}
-
-function Nav() {
-  return (
-    <nav>
-      <Link to="/">Home</Link> | <Link to="./../about">about</Link> |{" "}
-      <Link to="./../works">works</Link> |{" "}
-      <Link to="./../contact">contant</Link> | <Link to="./../app">app</Link>
-    </nav>
+    <Fragment>
+      <div>add:</div>
+      <input
+        type="text"
+        value={addText}
+        onChange={(e) => setAddText(e.target.value)}
+      />
+      <button onClick={onAddClick}>post</button>
+      <div>edit:</div>
+      <input
+        type="number"
+        value={editIndex}
+        onChange={(e) => setEditIndex(parseInt(e.target.value))}
+      />
+      <input
+        type="text"
+        value={editText}
+        onChange={(e) => setEditText(e.target.value)}
+      />
+      <button onClick={onEditClick}>post</button>
+      <div>notes:</div>
+      {notes.map((note, index) => (
+        <p key={index}>{note.body}</p>
+      ))}
+    </Fragment>
   );
 }
 
 function App() {
   return (
     <Fragment>
-      <Reset />
-      <Router>
-        <Home path="/" />
-        <About path="/about" />
-        <Works path="/works" />
-        <Contact path="/contact" />
-      </Router>
+      <StoreProvider store={store}>
+        <Reset />
+        <Main />
+      </StoreProvider>
     </Fragment>
   );
 }
