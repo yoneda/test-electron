@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "parcel index.html --out-dir build/output --cache-dir build/cache",
     "build": "parcel build index.html  --out-dir build/output --cache-dir build/cache --public-url ./",
-    "electron": "electron desktop.js"
+    "electron": "electron main.js"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
     "superagent": "^6.1.0"
   },
   "devDependencies": {
+    "electron": "^10.1.5",
     "parcel-bundler": "^1.12.4"
   }
 }
