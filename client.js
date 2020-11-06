@@ -28,7 +28,7 @@ const store = createStore({
       note.id === id ? { ...note, body } : note
     );
   }),
-  deleteNote: action((state, payload) => {
+  removeNote: action((state, payload) => {
     const { id } = payload;
     state.notes = state.notes.filter((note) => note.id !== id);
   }),
@@ -36,13 +36,15 @@ const store = createStore({
 
 function Main() {
   const notes = useStoreState((state) => state.notes);
-  const [addNote, editNote] = useStoreActions((actions) => [
+  const [addNote, editNote, removeNote] = useStoreActions((actions) => [
     actions.addNote,
     actions.editNote,
+    actions.removeNote
   ]);
   const [addText, setAddText] = useState("");
   const [editText, setEditText] = useState("");
   const [editIndex, setEditIndex] = useState(0);
+  const [removeIndex, setRemoveIndex] = useState(0);
   const onAddClick = () => {
     addNote({ body: addText });
     setAddText("");
@@ -51,6 +53,10 @@ function Main() {
     editNote({ id: editIndex, body: editText });
     setEditText("");
   };
+  const onRemoveClick = () => {
+    removeNote({id:removeIndex});
+    setRemoveIndex(0);
+  }
   return (
     <Fragment>
       <div>add:</div>
@@ -72,6 +78,13 @@ function Main() {
         onChange={(e) => setEditText(e.target.value)}
       />
       <button onClick={onEditClick}>post</button>
+      <div>delete:</div>
+      <input
+        type="number"
+        value={removeIndex}
+        onChange={(e) => setRemoveIndex(parseInt(e.target.value))}
+      />
+      <button onClick={onRemoveClick}>post</button>
       <div>notes:</div>
       {notes.map((note, index) => (
         <p key={index}>{note.body}</p>
