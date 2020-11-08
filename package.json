@@ -1,23 +1,16 @@
 {
   "name": "easy-diary",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "homepage": "https://github.com/yoneda/easy-diary#readme",
+  "license": "MIT",
+  "author": "yoneda <nsshowdream@gmail.com>",
+  "repository": "github:https://github.com/yoneda/easy-diary",
   "scripts": {
     "dev": "parcel index.html --out-dir build/output --cache-dir build/cache",
     "build": "parcel build index.html  --out-dir build/output --cache-dir build/cache --public-url ./",
     "electron": "electron main.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yoneda/test-server.git"
-  },
-  "author": "yoneda",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/yoneda/test-server/issues"
-  },
-  "homepage": "https://github.com/yoneda/test-server#readme",
   "dependencies": {
     "@reach/router": "^1.3.4",
     "dayjs": "^1.9.5",
