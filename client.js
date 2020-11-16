@@ -1,20 +1,33 @@
 import React, { Fragment, useState } from "react";
 import ReactDOM from "react-dom";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { Reset } from "styled-reset";
 import dayjs from "dayjs";
 import {
   action,
+  computed,
   createStore,
   StoreProvider,
   useStoreState,
   useStoreActions,
 } from "easy-peasy";
+import Editor from "./Editor";
+import NoteList from "./NoteList";
 
-let count = 0;
+let count = 3;
 
 const store = createStore({
-  notes: [],
+  notes: [
+    { id: 0, body: "aaa", createdAt: "2020-11-15" },
+    { id: 1, body: "bbb", createdAt: "2020-11-15" },
+    { id: 2, body: "ccc", createdAt: "2020-11-15" },
+  ],
+  id: -1,
+  selected: computed(state=>state.notes.find(note=>note.id===state.id)),
+  tapNote: action((state, payload) => {
+    const { id } = payload;
+    state.id = id;
+  }),
   addNote: action((state, payload) => {
     const { body } = payload;
     const today = dayjs().format("YYYY-M-D H:mm:ss");
@@ -34,12 +47,20 @@ const store = createStore({
   }),
 });
 
+const Button = styled.button``;
+
+const GlobalStyle = createGlobalStyle`
+  body{
+    font-size: 15px;
+  }
+`;
+
 function Main() {
   const notes = useStoreState((state) => state.notes);
   const [addNote, editNote, removeNote] = useStoreActions((actions) => [
     actions.addNote,
     actions.editNote,
-    actions.removeNote
+    actions.removeNote,
   ]);
   const [addText, setAddText] = useState("");
   const [editText, setEditText] = useState("");
@@ -54,9 +75,9 @@ function Main() {
     setEditText("");
   };
   const onRemoveClick = () => {
-    removeNote({id:removeIndex});
+    removeNote({ id: removeIndex });
     setRemoveIndex(0);
-  }
+  };
   return (
     <Fragment>
       <div>add:</div>
@@ -86,9 +107,9 @@ function Main() {
       />
       <button onClick={onRemoveClick}>post</button>
       <div>notes:</div>
-      {notes.map((note, index) => (
-        <p key={index}>{note.body}</p>
-      ))}
+      <NoteList />
+      <Editor />
+      <Button>This is a button</Button>
     </Fragment>
   );
 }
@@ -98,6 +119,7 @@ function App() {
     <Fragment>
       <StoreProvider store={store}>
         <Reset />
+        <GlobalStyle />
         <Main />
       </StoreProvider>
     </Fragment>

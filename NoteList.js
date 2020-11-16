@@ -24,7 +24,7 @@ const Note = styled.div`
 `;
 
 function NoteList() {
-  const [notes, index] = useStoreState((state) => [state.notes, state.index]);
+  const [notes, id] = useStoreState((state) => [state.notes, state.id]);
   const tapNote = useStoreActions((actions) => actions.tapNote);
   return (
     <Wrapper>
@@ -32,7 +32,7 @@ function NoteList() {
         <Note
           key={key}
           onClick={() => tapNote({ id: note.id })}
-          light={key === index}
+          light={note.id === id}
         >
           {note.body}
         </Note>
