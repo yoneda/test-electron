@@ -8,7 +8,7 @@ app.whenReady().then(() => {
       nodeIntegration: true,
     },
   });
-  win.loadFile("./build/output/index.html");
+  win.loadFile("./main.html");
 });
 
 app.on("window-all-closed", () => {

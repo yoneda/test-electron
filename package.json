@@ -1,11 +1,11 @@
 {
-  "name": "easy-diary",
+  "name": "test-electron",
   "version": "0.0.1",
   "description": "",
-  "homepage": "https://github.com/yoneda/easy-diary#readme",
+  "homepage": "https://github.com/yoneda/test-electron#readme",
   "license": "MIT",
   "author": "yoneda <nsshowdream@gmail.com>",
-  "repository": "github:https://github.com/yoneda/easy-diary",
+  "repository": "github:https://github.com/yoneda/test-electron",
   "scripts": {
     "dev": "parcel index.html --out-dir build/output --cache-dir build/cache",
     "build": "parcel build index.html  --out-dir build/output --cache-dir build/cache --public-url ./",
